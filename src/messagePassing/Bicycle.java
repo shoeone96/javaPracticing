@@ -1,10 +1,12 @@
 package messagePassing;
 
+// 이용할 자전거 class
 public class Bicycle {
     public Bicycle(String bicycleLocation, int bicycleId){
         this.bicycleId = bicycleId;
         this.bicycleLocation = bicycleLocation;
         this.usingCondition = false;
+        this.userId = 0;
     }
 
     private String bicycleLocation;
@@ -35,4 +37,6 @@ public class Bicycle {
     public void setUserId(int userId) {
         this.userId = userId;
     }
+
+    public int getUserId() { return userId;}
 }

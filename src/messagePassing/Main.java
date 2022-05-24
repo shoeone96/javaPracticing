@@ -32,6 +32,7 @@ public class Main {
         user1.checkBicycleList(user1.getUserLocation(), bicycleList);
         System.out.println(bicycle3.getBicycleLocation());
         user1.usingBicycle(bicycle3);
+        System.out.println(bicycle3.getUserId());
         user1.usingBicycle(bicycle2);
         user1.returnBicycle(bicycle3, "Gangnam");
         System.out.println(bicycle3.getBicycleLocation());
