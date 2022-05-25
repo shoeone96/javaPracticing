@@ -29,7 +29,8 @@ public class Main {
         bicycleList.add(bicycle9);
         bicycleList.add(bicycle10);
 
-        user1.checkBicycleList(user1.getUserLocation(), bicycleList);
+        user1.buyingVoucher(1000);
+        user1.checkBicycleList(bicycleList);
         System.out.println(bicycle3.getBicycleLocation());
         user1.usingBicycle(bicycle3);
         System.out.println(bicycle3.getUserId());
