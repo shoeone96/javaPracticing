@@ -1,10 +1,11 @@
 package messagePassing;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 // 어플 이용자
 public class User {
+    // 자전거에서 아무도 이용안할 때 user 의 id를 0으로 만들기 때문에 새로 생성되는 userId는 0이어서는 안된다
     public User(int id, String location) {
         if (id != 0) {
             this.id = id;
@@ -16,12 +17,12 @@ public class User {
         this.using = false;
     }
 
-    private int id;
-    private String userLocation;
-    private boolean using;
-    private boolean voucher;
-    private LocalTime buyingVoucherTime;
-    private LocalTime expireVoucherTime;
+    private int id; // 이용자의 ID
+    private String userLocation;  // 이용자 현재 위치
+    private boolean using; // 자전거 이용중 여부
+    private boolean voucher;  // 이용권 소유 여부
+    private LocalDateTime buyingVoucherTime;  // 바우처 구매 시간
+    private LocalDateTime expireVoucherTime;  // 바우처 만료 시간
 
     public void setUsing(boolean using) {
         this.using = using;
@@ -35,7 +36,7 @@ public class User {
         this.userLocation = userLocation;
     }
 
-    //	이용 가능 자전거 리스트 불러오기, 지역 상관없이 불러올 수 있음
+    //	이용 가능 자전거 리스트 불러오기, 지역 상관없이 불러올 수 있다, 어느 자전거가 어느 위치에 있는지도 알려준다
     public void checkBicycleList(ArrayList<Bicycle> BicycleList) {
         ArrayList<Bicycle> usableBicycle = new ArrayList<>();
         for (Bicycle bicycle : BicycleList) {
@@ -43,6 +44,7 @@ public class User {
                 usableBicycle.add(bicycle);
             }
         }
+        System.out.println("현재 이용 가능한 자전거와 자전거의 위치는 다음과 같습니다");
         for (Bicycle bicycle : usableBicycle) {
             System.out.println("자전거 id: " + bicycle.getBicycleId() + ", 자전거 위치: " + bicycle.getBicycleLocation());
         }
@@ -52,14 +54,13 @@ public class User {
       자전거 이용하기
       message passing 반영
       자전거 이용시 자전거의 이용중 여부, 자전거를 이용하는 사람의 ID, 자전거 이용자의 자전거 이용중 여부가 변경
-      추가적으로 바우처 소유 여부를 체크한 후의 현재 시간과 바우처 만료 시간이 동일하면 바우처를 파기하고 사용할 수 없다고 전달
+      추가적으로 바우처 소유 여부를 체크 후, 현재 시간과 바우처 만료 시간 비교해 만료시간이 되었거나 초과하면 바우처를 파기하고 사용할 수 없다고 전달
      */
-
     public void usingBicycle(Bicycle bicycle) {
-        if(!voucher){
+        if (!voucher) {
             System.out.println("이용권을 먼저 구매해주세요");
             return;
-        }else if (LocalTime.now() == expireVoucherTime){
+        } else if (LocalDateTime.now().isAfter(expireVoucherTime) || LocalDateTime.now().isEqual(expireVoucherTime) ) {
             voucher = false;
             System.out.println("이용권 이용 시간이 만료되었습니다.");
         }
@@ -75,7 +76,6 @@ public class User {
                 System.out.println("자전거를 이용합니다");
             }
         }
-
     }
 
     /*
@@ -101,19 +101,17 @@ public class User {
     1시간 이용 가능한 1회권 1000원에 구매하는 것으로 설정
     만료시간을 구매한 시점보다 1시간 뒤로 설정
      */
-    public void buyingVoucher(int money){
-        if (money < 1000){
+    public void buyingVoucher(int money) {
+        if (money < 1000) {
             System.out.println("따릉이 이용권은 1000원입니다");
-        }else {
+        } else {
             voucher = true;
-            buyingVoucherTime = LocalTime.now();
+            buyingVoucherTime = LocalDateTime.now();
             expireVoucherTime = buyingVoucherTime.plusHours(1);
             System.out.println("이용권을 구매하였습니다.");
+            System.out.println("거스름돈은 " + (money - 1000) + "원 입니다");
             System.out.println("이용권 시작 시간은 " + buyingVoucherTime.getHour() + "시 " + buyingVoucherTime.getMinute() + "분 " + buyingVoucherTime.getSecond() + "초 입니다");
             System.out.println("이용권 만료 시간은 " + expireVoucherTime.getHour() + "시 " + expireVoucherTime.getMinute() + "분 " + expireVoucherTime.getSecond() + "초 입니다");
         }
     }
-
-
-
 }

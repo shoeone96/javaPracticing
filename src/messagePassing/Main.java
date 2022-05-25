@@ -31,12 +31,10 @@ public class Main {
 
         user1.buyingVoucher(1000);
         user1.checkBicycleList(bicycleList);
-        System.out.println(bicycle3.getBicycleLocation());
         user1.usingBicycle(bicycle3);
-        System.out.println(bicycle3.getUserId());
         user1.usingBicycle(bicycle2);
         user1.returnBicycle(bicycle3, "Gangnam");
-        System.out.println(bicycle3.getBicycleLocation());
+        System.out.println("자전거 위치 변경 확인: " + bicycle3.getBicycleLocation());
 
     }
 }
